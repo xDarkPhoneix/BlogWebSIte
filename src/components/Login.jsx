@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { login as authLogin } from '../store/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -17,18 +17,20 @@ function  Login () {
         setError("");
         try {
          const session =  await authservice.login(data)
+
          if(session){
             const userData=await authservice.getCurrentUser()
-
+            console.log("userData",userData);
             if(userData){
-                dispatch(authLogin(data))
+                dispatch(authLogin(userData))
                
             }
          navigate("/")
          }
 
 
-
+        
+        
             
         } catch (error) {
             setError(error.message)
@@ -36,6 +38,12 @@ function  Login () {
 
 
     }
+
+    useEffect((
+        
+    )=>{
+        
+    },[])
 
 
 

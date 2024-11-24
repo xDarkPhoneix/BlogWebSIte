@@ -1,12 +1,15 @@
-import React, { useCallback ,useEffect} from 'react';
+import React, { useCallback ,useEffect, useState} from 'react';
 import {Button ,Input,Select,RTE} from "../index"
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import service from '../../appwrite/config';
 import { useSelector } from 'react-redux';
 
-
+ 
 function  PostForm ({post}) {
+    
+    const [logindata,setLoginData]=useState("")
+
     const {register,handleSubmit,watch ,setValue,getValues,control}=useForm({
         defaultValues:{
          title: post?.title || "",
@@ -22,6 +25,13 @@ function  PostForm ({post}) {
     const userData=useSelector((state)=>state.auth.userData)
 
     const submit=async(data)=>{
+        console.log("post data",post);
+       
+       
+        
+        
+         setLoginData(data)
+         
         if(post){
             const file=data.image[0] ? await service.fileUpload(data.image[0]): null;
 
@@ -41,9 +51,10 @@ function  PostForm ({post}) {
         }
         else {
             const file =await service.fileUpload(data.image[0])
-
+            console.log("file" , file);
+            
             if(file){
-                console.log(data);
+                
                 const fileId=file.$id
                  data.featuredImage=fileId
                  
@@ -89,6 +100,10 @@ function  PostForm ({post}) {
                 ))
             }
 
+            
+            
+            
+
         })
 
 
@@ -126,7 +141,7 @@ function  PostForm ({post}) {
                 label="Featured Image :"
                 type="file"
                 className="mb-4"
-                accept="image/png, image/jpg, image/jpeg, image/gif"
+                accept="image/png, image/jpg, image/jpeg, image/gif ,image/webp"
                 {...register("image", { required: !post })}
             />
             {post && (

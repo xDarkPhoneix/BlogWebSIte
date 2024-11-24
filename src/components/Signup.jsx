@@ -68,7 +68,7 @@ function  Signup () {
                         "Email address must be a valid address",
                         }
                     })}
-                    
+                    bg-blue-600 mt-2 rounded-md p-3
                     />
 
                     <Input

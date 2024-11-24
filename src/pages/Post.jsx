@@ -6,7 +6,7 @@ import { Button,Container } from "../components";
 import service from "../appwrite/config";
 
 function  Post () {
-    const [post, setPost] = useState(null);
+    const [post,setPost]=useState(null)
     const { slug } = useParams();
     const navigate = useNavigate();
 
@@ -15,15 +15,24 @@ function  Post () {
     const isAuthor = post && userData ? post.userId === userData.$id : false;
 
     useEffect(() => {
+ 
         if (slug) {
-            service.getPost(slug).then((post) => {
-                if (post) setPost(post);
+    
+             service.getPost(slug).then((postt) => {
+                if (postt) setPost(postt);
                 else navigate("/");
             });
+            
+            
         } else navigate("/");
+       
     }, [slug, navigate]);
 
+
+
     const deletePost = () => {
+          
+          
              service.deletePost(post.$id).then((status) => {
             if (status) {
                 service.deleteFile(post.featuredImage);
@@ -58,7 +67,7 @@ function  Post () {
                 <div className="w-full mb-6">
                     <h1 className="text-2xl font-bold">{post.title}</h1>
                 </div>
-                <div className="browser-css">
+                <div className="browser-css border rounded-xl p-4 bg-gray-500  ">
                     {parse(post.content)}
                     </div>
             </Container>

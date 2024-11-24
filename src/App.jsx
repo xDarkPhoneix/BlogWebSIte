@@ -15,6 +15,8 @@ function App() {
 
 
   useEffect(()=>{
+   
+    
     authservice.getCurrentUser()
     .then((userData)=>{
         if(userData){
@@ -35,7 +37,8 @@ function App() {
   },[])
 
   return !loading ? (
-    <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
+  
+    <div className='min-h-screen w-full flex flex-wrap content-between bg-gray-400'>
     <div className='w-full block'>
      <Header/>
       <main>
@@ -44,8 +47,13 @@ function App() {
       <Footer/>
     </div>
   </div>
+  
 )
- : ("Loading....")
+ : (
+    <div className='min-h-screen w-full  bg-gray-400 '>
+      <div className='flex text-4xl items-center justify-center '>Loading...</div>
+    </div>
+ )
 
 }
 

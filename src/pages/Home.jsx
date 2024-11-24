@@ -1,37 +1,47 @@
 import React ,{useEffect,useState,useCallback} from 'react';
 import service from '../appwrite/config';
-import { Container } from '../components';
+import { Container, PostCard } from '../components';
+import { useDispatch ,useSelector} from 'react-redux';
 
 function  Home () {
     const [posts, setPosts] = useState([])
+    const authStatus=useSelector((state)=>state.auth.status)
+
 
     useEffect(() => {
         service.getPosts().then((posts)=>{
+            console.log("posts",posts);
             if(posts){
                setPosts(posts.documents)
+               
+           
             }   
     
            })
-        
+           console.log("posts",posts);
+           
+    
     }, [])
+    
+    
+    // if (posts.length === 0) {
+    //     return (
+    //         <div className="w-full py-8 mt-4 text-center">
+    //             <Container>
+    //                 <div className="flex flex-wrap">
+    //                     <div className="p-2 w-full">
+    //                     <h1 className="text-2xl font-bold hover:text-gray-500">
+    //                             Login to read posts
+    //                     </h1>
+    //                     </div>
+    //                 </div>
+    //             </Container>
+    //         </div>
+    //     )
+    // }
+    //{authStatus ? () : ()}
 
-    if (posts.length === 0) {
-        return (
-            <div className="w-full py-8 mt-4 text-center">
-                <Container>
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
-                            <h1 className="text-2xl font-bold hover:text-gray-500">
-                                Login to read posts
-                            </h1>
-                        </div>
-                    </div>
-                </Container>
-            </div>
-        )
-    }
-
-    return (
+    return authStatus ? (
         <div className='w-full py-8'>
             <Container>
                 <div className='flex flex-wrap'>
@@ -43,6 +53,18 @@ function  Home () {
                 </div>
             </Container>
         </div>
+    ) : (  
+        <div className="w-full py-8 mt-4 text-center">
+                 <Container>
+                     <div className="flex flex-wrap">
+                         <div className="p-2 w-full">
+                         <h1 className="text-2xl font-bold hover:text-gray-500">
+                                 Login to read posts
+                         </h1>
+                         </div>
+                     </div>
+                 </Container>
+             </div>
     )
 }
 

@@ -3,15 +3,24 @@ import { Container,PostCard } from '../components';
 import service from '../appwrite/config';
 
 function  AllPost () {
-    const [posts,setposts]=useState([])
-    useEffect(()=>{},[])
+    const [posts,setPosts]=useState([])
+  
 
-     service.getPosts([]).then((posts)=>{
-        if(posts){
-            setposts(posts.documents)
-        }
-
-    })
+    useEffect(() => {
+        service.getPosts().then((posts)=>{
+            console.log("x posts",posts);
+            if(posts){
+               setPosts(posts.documents)
+               
+           
+            }   
+    
+           })
+           console.log("all posts",posts);
+           
+    
+    }, [])
+    
 
 
     return (
@@ -20,7 +29,7 @@ function  AllPost () {
             <div className='flex flex-wrap'>
                 {posts.map((post)=>(
                  <div key={post.$id} className='p-2 w-1/4'>
-                  <PostCard {...posts}/>
+                  <PostCard {...post}/>
                  </div>
                 ))}
                  
