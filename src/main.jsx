@@ -26,7 +26,7 @@ const router=createBrowserRouter([
   element:<App/>,
   children:[
     {
-      path: "/",
+      path: "",
       element: <Home />,
   },
   {
@@ -57,7 +57,7 @@ const router=createBrowserRouter([
       path: "/all-posts",
       element: (
           
-             <AuthLayout>
+             <AuthLayout >
                 {" "}
                 <AllPost />
              </AuthLayout>
@@ -68,7 +68,7 @@ const router=createBrowserRouter([
   {
       path: "/add-post",
       element: (
-          <AuthLayout >
+          <AuthLayout  >
               {" "}
               <AddPost />
           </AuthLayout>
