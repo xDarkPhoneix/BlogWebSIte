@@ -4,11 +4,13 @@ import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 import { Button,Container } from "../components";
 import service from "../appwrite/config";
+import Comments from "../components/Comments";
 
 function  Post () {
     const [post,setPost]=useState(null)
     const { slug } = useParams();
     const navigate = useNavigate();
+    const [comments,setComments]=useState("my comments")
 
     const userData = useSelector((state) => state.auth.userData);
 
@@ -20,9 +22,11 @@ function  Post () {
     
              service.getPost(slug).then((postt) => {
                 if (postt) setPost(postt);
+               
+                
                 else navigate("/");
             });
-            
+           
             
         } else navigate("/");
        
@@ -70,6 +74,9 @@ function  Post () {
                 <div className="browser-css border rounded-xl p-4 bg-gray-500  ">
                     {parse(post.content)}
                     </div>
+              
+                <Comments post={post}/>
+              
             </Container>
         </div>
     ) : null;

@@ -19,7 +19,7 @@ function  EditPost () {
         }else{
           navigate("/")
         }
-        console.log("edit",posts);
+       
     })
     
 
