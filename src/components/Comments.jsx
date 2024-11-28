@@ -78,7 +78,7 @@ function  Comments ({post}) {
             {xomment?.map((c)=>(
             <div className='m-2 bg-slate-900 text-white p-3 rounded-md' key={c.$id}>
                  <>
-                  {c.userName===userData.name ? (<>
+                  {c.userName===userData?.name ? (<>
                         <span className='m-1 font-bold italic'>@You</span>
                         
                     </>) : (
