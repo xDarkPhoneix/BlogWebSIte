@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import service from '../appwrite/config';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import comments from '../appwrite/comments';
+import Spinner from './Spinner';
 
 
 function  Comments ({post}) {
+    
+    const userData=useSelector((state)=>state.auth.userData)
     const [fetch,setFetch]=useState(false)
     const [xomment,setComments]=useState([])
     const {slug}=useParams()
-    const userData=useSelector((state)=>state.auth.userData)
-    const {register,handleSubmit}=useForm()
+    const {register,handleSubmit,reset}=useForm()
+    const [loading,setLoading]=useState(false)
      
     useEffect(()=>{
         
 
-        console.log("hola",post);
+        setLoading(true)
         comments.getComment(post.$id).then((qt)=>{
-            console.log("qt",qt);
-            setComments(qt.documents)
+            const sortedComments=qt.documents.sort((a,b)=>new Date(b.$createdAt) - new Date(a.$createdAt))
+            setComments(sortedComments)
          })
-         console.log("x",xomment);
          
+        setLoading(false)
     },[slug,fetch])
 
 
@@ -30,7 +33,9 @@ function  Comments ({post}) {
 
     const comment=async(data)=>{
         console.log(data.comment);
+        console.log("user",userData);
         
+        setLoading(true)
       const commentx=  await comments.createComment(
             {
                 Comments:data.comment,
@@ -42,7 +47,8 @@ function  Comments ({post}) {
      
         console.log("commentss",commentx);
         setFetch(!fetch)
-
+        setLoading(false)
+         reset();
 
     }
 
@@ -66,7 +72,7 @@ function  Comments ({post}) {
                  }
                 )}
                />
-               <button className='bg-slate-800 text-white p-3 rounded-md text-sm w-1/4' type='submit'>Add</button>
+               <button className='bg-slate-800 text-white p-3 rounded-md text-sm w-1/4' type='submit'>Post</button>
                </div>
             </form>
          
@@ -74,7 +80,10 @@ function  Comments ({post}) {
         </div>
        <>
        <div className='browser-css border rounded-xl p-4 bg-gray-500  mt-5'>
-        {xomment.length !== 0 ? (<>
+     
+        {loading ? (<> <Spinner/>  </>):
+        (<>
+          {xomment.length !== 0 ? (<>
             {xomment?.map((c)=>(
             <div className='m-2 bg-slate-900 text-white p-3 rounded-md' key={c.$id}>
                  <>
@@ -94,6 +103,9 @@ function  Comments ({post}) {
         </>) : (<>
            <span className='font-bold italic ml-3'>No Comments Yet</span>
          </>)}
+        
+        </>)}
+
         </div>
        </>
 

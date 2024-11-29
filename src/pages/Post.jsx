@@ -9,15 +9,17 @@ import Comments from "../components/Comments";
 function  Post () {
     const [post,setPost]=useState(null)
     const { slug } = useParams();
-    const navigate = useNavigate();
-    const [comments,setComments]=useState("my comments")
-
     const userData = useSelector((state) => state.auth.userData);
+    const navigate = useNavigate();
+  
+
+    
 
     const isAuthor = post && userData ? post.userId === userData.$id : false;
 
     useEffect(() => {
- 
+         console.log("us",userData);
+         
         if (slug) {
     
              service.getPost(slug).then((postt) => {
@@ -31,6 +33,9 @@ function  Post () {
         } else navigate("/");
        
     }, [slug, navigate]);
+
+
+  
 
 
 

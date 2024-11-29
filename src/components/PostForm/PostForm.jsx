@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import service from '../../appwrite/config';
 import { useSelector } from 'react-redux';
+import Spinner from '../Spinner';
 
  
 function  PostForm ({post}) {
     
-    const [logindata,setLoginData]=useState("")
+    const [loading,setLoading]=useState(false)
 
     const {register,handleSubmit,watch ,setValue,getValues,control}=useForm({
         defaultValues:{
@@ -30,9 +31,10 @@ function  PostForm ({post}) {
        
         
         
-         setLoginData(data)
+         
          
         if(post){
+            setLoading(true)
             const file=data.image[0] ? await service.fileUpload(data.image[0]): null;
 
             if(file){
@@ -44,12 +46,14 @@ function  PostForm ({post}) {
                 featuredImage : file ? file.$id : undefined
             })
 
-
+            setLoading(false)
             if(dbPost){
                 navigate(`/post/${post.$id}`)
             }
         }
         else {
+             
+            setLoading(true)
             const file =await service.fileUpload(data.image[0])
             console.log("file" , file);
             
@@ -63,7 +67,7 @@ function  PostForm ({post}) {
                     ...data,
                     userId:userData.$id
                  });
-                 
+                 setLoading(false)
                  if(dbPost){
                     navigate(`/post/${dbPost.$id}`)
                  }
@@ -160,7 +164,7 @@ function  PostForm ({post}) {
                 {...register("status", { required: true })}
             />
             <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
-                {post ? "Update" : "Submit"}
+               {loading ? (<><Spinner className='border-green-950'/></>) : (<> {post ? "Update" : "Submit"}</>)}
             </Button>
         </div>
     </form>

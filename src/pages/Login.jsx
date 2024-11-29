@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Login as Logincomponent } from '../components';
 
 function  Login () {
+  
     return (
       <div className='py-8'>
         <Logincomponent/>

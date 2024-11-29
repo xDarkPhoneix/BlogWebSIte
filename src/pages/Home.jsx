@@ -6,9 +6,12 @@ import { useDispatch ,useSelector} from 'react-redux';
 function  Home () {
     const [posts, setPosts] = useState([])
     const authStatus=useSelector((state)=>state.auth.status)
+    const user=useSelector((state)=>state.auth.userData)
 
 
     useEffect(() => {
+        console.log("xer",user);
+        
         service.getPosts().then((posts)=>{
             console.log("posts",posts);
             if(posts){

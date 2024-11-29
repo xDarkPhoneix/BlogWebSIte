@@ -6,32 +6,31 @@ import {useForm} from "react-hook-form"
 import authservice from '../appwrite/auth';
 import {Logo,Button,Input} from "./index"
 import { Link } from 'react-router-dom';
+import Spinner from './Spinner';
 
 function  Login () {
     const navigate=useNavigate()
     const dispatch=useDispatch()
     const [error,setError]=useState("")
     const {register,handleSubmit}=useForm()
+    const [loading,setLoading]=useState(false)
 
     const login=async(data)=>{
         setError("");
+         setLoading(true)
+       
         try {
          const session =  await authservice.login(data)
-
+         
          if(session){
             const userData=await authservice.getCurrentUser()
-            console.log("userData",userData);
-            if(userData){
-                dispatch(authLogin(userData))
-               
-            }
+           
+            if(userData)  dispatch(authLogin({userData:userData}));
+            setLoading(false)
          navigate("/")
-         }
-
-
-        
-        
-            
+     
+        }
+    
         } catch (error) {
             setError(error.message)
         }
@@ -39,11 +38,7 @@ function  Login () {
 
     }
 
-    useEffect((
-        
-    )=>{
-        
-    },[])
+   
 
 
 
@@ -96,13 +91,13 @@ function  Login () {
 
                     })}
                     
-                    />
-                    <Button
+                    /> 
+                 <Button
                     type="submit"
                      className="w-full"
-                    >Sign in</Button>
-                  
-                   
+                    >
+                       {loading ? (<><Spinner className='border-blue-900'/></>) : (<>Sign in</>)} 
+                    </Button>
 
                 </div>
             </form>

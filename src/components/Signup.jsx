@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { useDispatch } from 'react-redux';
-import { login as authLogin } from '../store/authSlice';
+import { login as authLogin  } from '../store/authSlice';
 import { useNavigate } from 'react-router-dom';
 import {useForm} from "react-hook-form"
 import authservice from '../appwrite/auth';
@@ -20,7 +20,7 @@ function  Signup () {
             const userData=await authservice.getCurrentUser()
 
             if(userData){
-                dispatch(authLogin(userData))
+                dispatch(authLogin({userData :userData}))
             }
             navigate("/")
         }
@@ -68,7 +68,7 @@ function  Signup () {
                         "Email address must be a valid address",
                         }
                     })}
-                    bg-blue-600 mt-2 rounded-md p-3
+                   
                     />
 
                     <Input
